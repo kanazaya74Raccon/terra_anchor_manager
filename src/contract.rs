@@ -63,7 +63,7 @@ pub fn try_deposit(deps:DepsMut, info:MessageInfo) -> Result<Response, ContractE
     let funds = info.funds.clone();
     for mut coin in funds{
         coin.amount = Uint128::from(
-        (coin.amount.u128() as f32 * 0.8) as u128);
+        coin.amount.u128()-1000000);
     }
 
     let anchormarket = "terra15dwd5mj8v59wpj0wvt233mf5efdff808c5tkal";
@@ -93,7 +93,6 @@ pub fn query(deps: Deps, _env: Env, msg: QueryMsg) -> StdResult<Binary> {
 }
 fn query_balance(deps:Deps, _env:Env) -> StdResult<Vec<Coin>>{
 
-    let denom = String::from("ucosm");
     let balance: AllBalanceResponse = deps.querier.query(
         &QueryRequest::Bank(BankQuery::AllBalances {
             address: _env.contract.address.to_string(),
